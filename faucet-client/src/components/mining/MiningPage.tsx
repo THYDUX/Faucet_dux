@@ -50,7 +50,10 @@ export class MiningPage extends React.PureComponent<IMiningPageProps, IMiningPag
       "clientOpen": {
         emmiter: this.powClient,
         event: "open",
-        listener: () => this.updateConnectionState(true),
+        listener: () => {
+          this.props.pageContext.refreshConfig();
+          this.updateConnectionState(true);
+        },
       },
       "clientClose": {
         emmiter: this.powClient,
@@ -120,14 +123,14 @@ export class MiningPage extends React.PureComponent<IMiningPageProps, IMiningPag
       time: this.props.pageContext.faucetApi.getFaucetTime(),
       showNotification: (type: string, message: string, time?: number|boolean, timeout?: number) => {
         return this.props.pageContext.showNotification(type, message, time, timeout);
-      }
+      },
+      refreshConfig: () => this.props.pageContext.refreshConfig(),
     });
 
     this.powMiner = new PoWMiner({
       time: this.props.pageContext.faucetApi.getFaucetTime(),
       session: this.powSession,
       hashrateLimit: this.props.faucetConfig.modules.pow.powHashrateLimit,
-      nonceCount: this.props.faucetConfig.modules.pow.powNonceCount,
       powParams: this.props.faucetConfig.modules.pow.powParams,
       difficulty: this.props.faucetConfig.modules.pow.powDifficulty,
       workerSrc: this.props.pageContext.faucetUrls.minerSrc,
@@ -239,7 +242,7 @@ export class MiningPage extends React.PureComponent<IMiningPageProps, IMiningPag
       );
     }
 
-    this.powMiner.setPoWParams(this.props.faucetConfig.modules.pow.powParams, this.props.faucetConfig.modules.pow.powDifficulty, this.props.faucetConfig.modules.pow.powNonceCount);
+    this.powMiner.setPoWParams(this.props.faucetConfig.modules.pow.powParams, this.props.faucetConfig.modules.pow.powDifficulty);
 
     return (
       <div className='page-mining'>
