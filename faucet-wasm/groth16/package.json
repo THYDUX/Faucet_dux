@@ -9,7 +9,7 @@
   "author": "",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "webpack": "^5.90.3",
+    "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
